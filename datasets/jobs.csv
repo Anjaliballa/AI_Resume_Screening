@@ -1,0 +1,11 @@
+job_id,job_title,company,required_skills,education,experience,description
+1,Machine Learning Intern,Tech Solutions,"python,machine learning,pandas,numpy,scikit-learn",Computer Science,0,"Work on machine learning models and data preprocessing."
+2,Data Science Intern,Data Labs,"python,pandas,numpy,sql,machine learning",Computer Science,0,"Analyze datasets and build predictive models."
+3,Python Developer Intern,Software Hub,"python,flask,sql,git,github",Computer Science,0,"Develop Python applications and REST APIs."
+4,AI Intern,AI Technologies,"python,artificial intelligence,machine learning,computer vision",Computer Science,0,"Work on artificial intelligence and computer vision projects."
+5,Web Developer Intern,Web Solutions,"html,css,javascript,react,flask",Computer Science,0,"Develop and maintain web applications."
+6,Data Analyst Intern,Analytics Corp,"python,sql,pandas,excel",Computer Science,0,"Analyze business data and generate insights."
+7,NLP Intern,Language AI,"python,nlp,nltk,spacy,machine learning",Computer Science,0,"Build natural language processing applications."
+8,Computer Vision Intern,Vision Labs,"python,opencv,computer vision,machine learning",Computer Science,0,"Develop computer vision applications."
+9,Software Engineer Intern,Code Systems,"python,java,sql,git,data structures",Computer Science,0,"Develop and test software applications."
+10,ML Engineer Intern,Future AI,"python,pytorch,tensorflow,machine learning,deep learning",Computer Science,0,"Develop and optimize machine learning models."
