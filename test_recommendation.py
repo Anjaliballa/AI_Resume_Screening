@@ -1,16 +1,43 @@
-from parser.candidate_profile import create_candidate_profile
 from recommender.job_loader import load_jobs
 from recommender.recommendation import recommend_jobs
 
 
-# Resume
-resume_path = "uploads/dresume.pdf"
+# Example candidate profile
+profile = {
+    "skills": [
+        "python",
+        "c",
+        "html",
+        "css",
+        "react",
+        "sql",
+        "dbms",
+        "machine learning",
+        "numpy",
+        "pandas",
+        "git",
+        "github",
+        "jupyter",
+        "computer vision"
+    ],
 
-# Create candidate profile
-profile = create_candidate_profile(resume_path)
+    "education": [
+        "B.Tech in Computer Science"
+    ],
+
+    "projects": [
+        "Machine Learning Telecom Customer Churn Prediction",
+        "Rubik Cube Solver using AI",
+        "Computer Vision"
+    ],
+
+    "experience": []
+}
+
 
 # Load jobs
 jobs = load_jobs("datasets/jobs.csv")
+
 
 # Generate recommendations
 recommendations = recommend_jobs(
@@ -18,12 +45,29 @@ recommendations = recommend_jobs(
     jobs
 )
 
-print("\n===== JOB RECOMMENDATIONS =====")
 
-for job in recommendations:
+print("\n===== EXPLAINABLE JOB RECOMMENDATIONS =====\n")
+
+
+for i, job in enumerate(recommendations, 1):
+
+    print(f"{i}. {job['job_title']}")
+    print(f"   Company: {job['company']}")
+    print(f"   Overall Match: {job['score']}%")
+
+    print(f"   Skills Match: {job['skill_score']}%")
+    print(f"   Education Match: {job['education_score']}%")
+    print(f"   Project Match: {job['project_score']}%")
+    print(f"   Experience Match: {job['experience_score']}%")
 
     print(
-        f"{job['job_title']} | "
-        f"{job['company']} | "
-        f"Match: {job['score']}%"
+        f"   Matching Skills: "
+        f"{', '.join(job['matching_skills'])}"
     )
+
+    print(
+        f"   Missing Skills: "
+        f"{', '.join(job['missing_skills'])}"
+    )
+
+    print()
