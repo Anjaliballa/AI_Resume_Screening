@@ -69,5 +69,12 @@ for i, job in enumerate(recommendations, 1):
         f"   Missing Skills: "
         f"{', '.join(job['missing_skills'])}"
     )
-
+    print(
+    f"   Skill Coverage: "
+    f"{job['skill_coverage']}%"
+    )
+    print(
+    f"   Skill Priorities: "
+    f"{job['skill_priorities']}"
+    )
     print()

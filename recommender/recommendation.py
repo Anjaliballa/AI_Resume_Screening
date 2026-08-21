@@ -1,7 +1,23 @@
+# recommender/recommendation.py
+
 from recommender.similarity import (
     calculate_skill_match,
     calculate_text_match,
     calculate_final_score
+)
+
+from recommender.skill_gap import analyze_skill_gap
+
+from recommender.skill_priority import (
+    calculate_skill_priority
+)
+
+from recommender.learning_recommendation import (
+    generate_learning_recommendations
+)
+
+from recommender.career_roadmap import (
+    generate_career_roadmap
 )
 
 
@@ -9,54 +25,37 @@ def recommend_jobs(profile, jobs):
 
     results = []
 
-    # Candidate skills
-    candidate_skills = [
-        skill.strip().lower()
-        for skill in profile.get("skills", [])
-    ]
-
     for _, job in jobs.iterrows():
 
-        # -----------------------------------
-        # 1. Required skills
-        # -----------------------------------
+        # ==================================================
+        # 1. REQUIRED SKILLS
+        # ==================================================
 
         required_skills = [
             skill.strip().lower()
             for skill in job["required_skills"].split(",")
+            if skill.strip()
         ]
 
-        # -----------------------------------
-        # 2. Matching and missing skills
-        # -----------------------------------
+        # Candidate skills
+        candidate_skills = [
+            skill.strip().lower()
+            for skill in profile.get("skills", [])
+            if skill.strip()
+        ]
 
-        candidate_skill_set = set(candidate_skills)
-        required_skill_set = set(required_skills)
-
-        matching_skills = sorted(
-            candidate_skill_set.intersection(
-                required_skill_set
-            )
-        )
-
-        missing_skills = sorted(
-            required_skill_set.difference(
-                candidate_skill_set
-            )
-        )
-
-        # -----------------------------------
-        # 3. Skill score
-        # -----------------------------------
+        # ==================================================
+        # 2. SKILL MATCH
+        # ==================================================
 
         skill_score = calculate_skill_match(
             candidate_skills,
             required_skills
         )
 
-        # -----------------------------------
-        # 4. Education score
-        # -----------------------------------
+        # ==================================================
+        # 3. EDUCATION MATCH
+        # ==================================================
 
         education_text = " ".join(
             profile.get("education", [])
@@ -64,12 +63,12 @@ def recommend_jobs(profile, jobs):
 
         education_score = calculate_text_match(
             education_text,
-            job["education"]
+            str(job["education"])
         )
 
-        # -----------------------------------
-        # 5. Project score
-        # -----------------------------------
+        # ==================================================
+        # 4. PROJECT MATCH
+        # ==================================================
 
         project_text = " ".join(
             profile.get("projects", [])
@@ -77,12 +76,12 @@ def recommend_jobs(profile, jobs):
 
         project_score = calculate_text_match(
             project_text,
-            job["description"]
+            str(job["description"])
         )
 
-        # -----------------------------------
-        # 6. Experience score
-        # -----------------------------------
+        # ==================================================
+        # 5. EXPERIENCE MATCH
+        # ==================================================
 
         experience_text = " ".join(
             profile.get("experience", [])
@@ -90,12 +89,12 @@ def recommend_jobs(profile, jobs):
 
         experience_score = calculate_text_match(
             experience_text,
-            job["description"]
+            str(job["description"])
         )
 
-        # -----------------------------------
-        # 7. Final weighted score
-        # -----------------------------------
+        # ==================================================
+        # 6. FINAL JOB SCORE
+        # ==================================================
 
         final_score = calculate_final_score(
             skill_score,
@@ -104,11 +103,59 @@ def recommend_jobs(profile, jobs):
             experience_score
         )
 
-        # -----------------------------------
-        # 8. Store complete result
-        # -----------------------------------
+        # ==================================================
+        # 7. SKILL GAP ANALYSIS
+        # ==================================================
+
+        skill_gap = analyze_skill_gap(
+            candidate_skills,
+            required_skills
+        )
+
+        matching_skills = skill_gap["matching_skills"]
+
+        missing_skills = skill_gap["missing_skills"]
+
+        skill_coverage = skill_gap["coverage"]
+
+        # ==================================================
+        # 8. SKILL PRIORITY
+        # ==================================================
+
+        skill_priorities = calculate_skill_priority(
+            missing_skills,
+            required_skills,
+            job["job_title"]
+        )
+
+        # ==================================================
+        # 9. LEARNING RECOMMENDATIONS
+        # ==================================================
+
+        learning_recommendations = (
+            generate_learning_recommendations(
+                skill_priorities
+            )
+        )
+
+        # ==================================================
+        # 10. CAREER ROADMAP
+        # ==================================================
+
+        career_roadmap = generate_career_roadmap(
+            job["job_title"],
+            candidate_skills,
+            missing_skills,
+            skill_priorities
+        )
+
+        # ==================================================
+        # 11. STORE COMPLETE RESULT
+        # ==================================================
 
         results.append({
+
+            "job_id": job["job_id"],
 
             "job_title": job["job_title"],
 
@@ -116,31 +163,54 @@ def recommend_jobs(profile, jobs):
 
             "score": final_score,
 
-            "skill_score": round(skill_score, 2),
+            "skill_score": round(
+                skill_score,
+                2
+            ),
 
             "education_score": round(
-                education_score, 2
+                education_score,
+                2
             ),
 
             "project_score": round(
-                project_score, 2
+                project_score,
+                2
             ),
 
             "experience_score": round(
-                experience_score, 2
+                experience_score,
+                2
             ),
 
-            "matching_skills": matching_skills,
+            "description": job["description"],
 
-            "missing_skills": missing_skills,
+            # Skill gap
+            "matching_skills":
+                matching_skills,
 
-            "description": job["description"]
+            "missing_skills":
+                missing_skills,
 
+            "skill_coverage":
+                skill_coverage,
+
+            # Priority
+            "skill_priorities":
+                skill_priorities,
+
+            # Learning
+            "learning_recommendations":
+                learning_recommendations,
+
+            # Career roadmap
+            "career_roadmap":
+                career_roadmap
         })
 
-    # -----------------------------------
-    # Sort highest score first
-    # -----------------------------------
+    # ======================================================
+    # 12. SORT BY BEST MATCH
+    # ======================================================
 
     results.sort(
         key=lambda x: x["score"],
