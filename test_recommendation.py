@@ -1,8 +1,6 @@
 from recommender.job_loader import load_jobs
 from recommender.recommendation import recommend_jobs
-
-
-# Example candidate profile
+# Example for a candidate profile
 profile = {
     "skills": [
         "python",
@@ -33,22 +31,15 @@ profile = {
 
     "experience": []
 }
-
-
-# Load jobs
+# to load jobs
 jobs = load_jobs("datasets/jobs.csv")
 
-
-# Generate recommendations
+#to generate recommendations
 recommendations = recommend_jobs(
     profile,
     jobs
 )
-
-
 print("\n===== EXPLAINABLE JOB RECOMMENDATIONS =====\n")
-
-
 for i, job in enumerate(recommendations, 1):
 
     print(f"{i}. {job['job_title']}")
