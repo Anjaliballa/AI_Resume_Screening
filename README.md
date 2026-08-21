@@ -1,8 +1,7 @@
 # AI Resume Screening & Job Recommendation System
 
-An AI-powered Resume Screening and Job Recommendation System that automatically analyzes resumes, extracts candidate information using NLP techniques, matches skills with job requirements, ranks suitable job opportunities, and generates a detailed resume analysis report.
 
--
+An AI-powered Resume Screening and Job Recommendation System that automatically analyzes resumes, extracts candidate information using NLP techniques, matches skills with job requirements, ranks suitable job opportunities, and generates a detailed resume analysis report.
 
 # Project Overview
 
@@ -17,16 +16,11 @@ The system:
 - Generates job recommendations with match scores
 - Creates an automated PDF resume analysis report
 
----
-
 #  Features
-
 ##  Resume Processing
 #  AI Resume Screening & Job Recommendation System
 
 An AI-powered Resume Screening and Job Recommendation System that automatically analyzes resumes, extracts candidate information, compares candidate skills with job requirements, identifies skill gaps, and provides explainable job recommendations and career learning roadmaps.
-
----
 
 ##  Project Overview
 
@@ -34,9 +28,7 @@ Recruiters often need to manually review hundreds of resumes for a single job po
 
 This project uses **Natural Language Processing (NLP)** and **Machine Learning techniques** to automate resume analysis and job recommendation.
 
-The system accepts a resume in **PDF or DOCX format**, extracts important candidate information, analyzes the candidate profile, and recommends suitable jobs based on their skills and qualifications.
-
----
+The system accepts a resume in **PDF or DOCX format**, extracts important candidate information, analyzes the candidate profile, and recommends suitable jobs based on their skills and qualifications
 
 ##  Objectives
 
@@ -55,7 +47,6 @@ The main objectives of this project are:
 - Analyze resume completeness and suggest improvements.
 - Generate a downloadable resume analysis report.
 
----
 
 #  Features
 
@@ -67,7 +58,6 @@ Supports multiple resume formats:
 -  DOCX resume parsing
 -  Text extraction
 -  Resume preprocessing
-
 
 ##  NLP-Based Information Extraction
 
